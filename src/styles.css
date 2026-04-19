@@ -1,0 +1,298 @@
+:root {
+  color-scheme: dark;
+  --bg: #0d0d0d;
+  --panel: rgba(20, 20, 20, 0.98);
+  --card: #161616;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --text: #f3f3f3;
+  --muted: #a0a0a0;
+  --primary: #f3f3f3;
+  --primary-ink: #0d0d0d;
+  --soft: #232323;
+  --soft-2: #1b1b1b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#app {
+  min-height: 100vh;
+}
+
+body.launcherMode {
+  background: transparent;
+  overflow: hidden;
+}
+
+#app.launcherMode {
+  min-height: 60px;
+  width: 60px;
+  height: 60px;
+}
+
+.launcherShell {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+
+.launcherClose {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #d93a3a;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0;
+  z-index: 2;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.35);
+}
+
+.launcher {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: 999px;
+  background: #101010;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.45);
+  user-select: none;
+}
+
+.launcherLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dragRegion {
+  -webkit-app-region: drag;
+}
+
+.noDrag {
+  -webkit-app-region: no-drag;
+}
+
+.panel {
+  padding: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 22%),
+    var(--panel);
+  min-height: 100vh;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.brandLine {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.sectionMeta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.field {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.compactGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.field span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.76rem;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+input,
+select,
+textarea,
+button,
+pre {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--soft-2);
+  color: var(--text);
+}
+
+textarea {
+  min-height: 82px;
+  resize: vertical;
+}
+
+.modeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+button:hover {
+  transform: none;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.modeButton {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+}
+
+.primaryButton {
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-weight: 700;
+}
+
+.secondaryButton {
+  background: var(--soft);
+  color: var(--text);
+}
+
+.ghostButton,
+.modeButton {
+  background: transparent;
+  color: var(--text);
+}
+
+.modeButton.active {
+  background: #f0f0f0;
+  color: #0c0c0c;
+  border-color: #f0f0f0;
+}
+
+.actionRow {
+  display: flex;
+  gap: 10px;
+}
+
+.actionRow > * {
+  flex: 1;
+}
+
+.preview {
+  width: 100%;
+  min-height: 180px;
+  border-radius: 14px;
+  object-fit: contain;
+  background: #0f0f0f;
+  border: 1px solid var(--line);
+}
+
+.outputCard {
+  margin-bottom: 0;
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 250px;
+  overflow: auto;
+  color: #e8e8e8;
+  background: #111111;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  line-height: 1.45;
+}

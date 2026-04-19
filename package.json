@@ -1,0 +1,38 @@
+{
+  "name": "screen-assist-win",
+  "version": "0.1.0",
+  "description": "Windows desktop AI screen assistant for coding workflows",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win nsis",
+    "build:dir": "electron-builder --win dir",
+    "build:portable": "electron-packager . Helpix@HCU --platform=win32 --arch=x64 --out=portable-dist --overwrite --asar"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^24.13.3",
+    "electron-packager": "^17.1.2"
+  },
+  "build": {
+    "appId": "com.adesh.helpixhcu",
+    "productName": "Helpix@HCU",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "HelpixHCU-Setup-${version}.${ext}"
+    }
+  }
+}

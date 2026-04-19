@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data:; img-src 'self' data:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen Assist Win</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="app"></main>
+
+    <script>
+      const mode = new URLSearchParams(window.location.search).get("mode");
+      const appRoot = document.getElementById("app");
+
+      if (mode === "launcher") {
+        document.body.classList.add("launcherMode");
+        appRoot.classList.add("launcherMode");
+        appRoot.innerHTML = `
+          <div class="launcherShell">
+            <button class="launcherClose noDrag" id="launcherClose" title="Quit Helpix@HCU">x</button>
+            <div class="launcher" id="launcherButton" title="Open screen assistant">
+              <img class="launcherLogo" src="./helpix-logo.png" alt="Helpix@HCU logo" draggable="false" />
+            </div>
+          </div>
+        `;
+
+        const launcherButton = document.getElementById("launcherButton");
+        let pointerDown = false;
+        let hasMoved = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        const dragThreshold = 6;
+
+        launcherButton.addEventListener("pointerdown", (event) => {
+          if (event.button !== 0) {
+            return;
+          }
+
+          pointerDown = true;
+          hasMoved = false;
+          dragOffsetX = event.clientX;
+          dragOffsetY = event.clientY;
+          launcherButton.setPointerCapture(event.pointerId);
+          event.preventDefault();
+        });
+
+        launcherButton.addEventListener("pointermove", async (event) => {
+          if (!pointerDown) {
+            return;
+          }
+
+          const movedX = Math.abs(event.clientX - dragOffsetX);
+          const movedY = Math.abs(event.clientY - dragOffsetY);
+
+          if (!hasMoved && movedX < dragThreshold && movedY < dragThreshold) {
+            return;
+          }
+
+          hasMoved = true;
+          await window.screenAssist.setLauncherPosition({
+            x: event.screenX - dragOffsetX,
+            y: event.screenY - dragOffsetY
+          });
+          event.preventDefault();
+        });
+
+        launcherButton.addEventListener("pointerup", async (event) => {
+          if (!pointerDown) {
+            return;
+          }
+
+          pointerDown = false;
+          launcherButton.releasePointerCapture(event.pointerId);
+
+          if (!hasMoved) {
+            await window.screenAssist.toggleAssistant();
+          }
+        });
+
+        launcherButton.addEventListener("pointercancel", () => {
+          pointerDown = false;
+          hasMoved = false;
+        });
+
+        document.getElementById("launcherClose").addEventListener("click", async (event) => {
+          event.stopPropagation();
+          await window.screenAssist.quitApp();
+        });
+      } else {
+        document.body.classList.add("panelMode");
+        appRoot.innerHTML = `
+          <section class="panel">
+            <header class="panelHeader dragRegion">
+              <div>
+                <p class="eyebrow">Desktop Assistant</p>
+                <h1>Helpix@HCU</h1>
+                <p class="brandLine">by adesh</p>
+              </div>
+              <button class="ghostButton noDrag" id="closeButton">Close</button>
+            </header>
+
+            <section class="card">
+              <div class="cardHeader">
+                <p class="sectionTitle">Connection</p>
+                <p class="sectionMeta">Provider and model</p>
+              </div>
+              <div class="compactGrid">
+                <label class="field">
+                  <span>Preset</span>
+                  <select id="providerPreset" class="noDrag">
+                    <option value="custom">Custom</option>
+                  <option value="groq">Groq</option>
+                  <option value="gemini">Gemini</option>
+                  <option value="openai">OpenAI</option>
+                  <option value="openrouter">OpenRouter</option>
+                </select>
+                </label>
+                <label class="field">
+                  <span>Provider name</span>
+                  <input id="providerName" class="noDrag" placeholder="Groq / OpenAI / OpenRouter" />
+                </label>
+                <label class="field">
+                  <span>Base URL</span>
+                  <input id="baseUrl" class="noDrag" placeholder="https://api.groq.com/openai/v1" />
+                </label>
+                <label class="field">
+                  <span>Model</span>
+                  <input id="model" class="noDrag" list="modelSuggestions" placeholder="vision-capable model name" />
+                  <datalist id="modelSuggestions"></datalist>
+                </label>
+              </div>
+              <label class="field">
+                <span>API key</span>
+                <input id="apiKey" class="noDrag" type="password" placeholder="Optional for now" />
+              </label>
+              <button class="secondaryButton noDrag" id="saveSettings">Save Settings</button>
+            </section>
+
+            <section class="card">
+              <div class="cardHeader">
+                <p class="sectionTitle">Task</p>
+                <p class="sectionMeta">Choose one mode</p>
+              </div>
+              <div class="modeGrid">
+                <button class="modeButton active" data-mode="diagnose">What is wrong?</button>
+                <button class="modeButton" data-mode="next_step">What should I do next?</button>
+                <button class="modeButton" data-mode="write_code">Write the next code step</button>
+                <button class="modeButton" data-mode="explain_screen">Explain this screen</button>
+              </div>
+              <label class="field">
+                <span>Extra note</span>
+                <textarea id="userNotes" class="noDrag" placeholder="Example: This is Stata and my regression command keeps failing."></textarea>
+              </label>
+              <div class="actionRow">
+                <button class="primaryButton noDrag" id="captureButton">Capture</button>
+                <button class="secondaryButton noDrag" id="analyzeButton">Analysis by AI</button>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="cardHeader">
+                <p class="sectionTitle">Captured Screen</p>
+                <p class="sectionMeta">Latest frame</p>
+              </div>
+              <img id="preview" class="preview" alt="Screenshot preview" />
+            </section>
+
+            <section class="card outputCard">
+              <div class="cardHeader">
+                <p class="sectionTitle">Assistant Response</p>
+                <p class="sectionMeta">Working output</p>
+              </div>
+              <pre id="output">Capture a screenshot, then analyze it. If API settings are empty, the app will stay in offline guidance mode.</pre>
+            </section>
+          </section>
+        `;
+
+        let currentMode = "diagnose";
+        let capturedImage = "";
+
+        const fields = {
+          providerPreset: document.getElementById("providerPreset"),
+          providerName: document.getElementById("providerName"),
+          baseUrl: document.getElementById("baseUrl"),
+          model: document.getElementById("model"),
+          apiKey: document.getElementById("apiKey")
+        };
+
+        const output = document.getElementById("output");
+        const preview = document.getElementById("preview");
+        const userNotes = document.getElementById("userNotes");
+        const modelSuggestions = document.getElementById("modelSuggestions");
+
+        const presets = {
+          custom: {
+            providerName: "",
+            baseUrl: "",
+            models: []
+          },
+          groq: {
+            providerName: "Groq",
+            baseUrl: "https://api.groq.com/openai/v1",
+            models: ["meta-llama/llama-4-scout-17b-16e-instruct", "meta-llama/llama-4-maverick-17b-128e-instruct"]
+          },
+          gemini: {
+            providerName: "Gemini",
+            baseUrl: "https://generativelanguage.googleapis.com/v1beta",
+            models: ["gemini-2.5-flash", "gemini-2.5-flash-lite"]
+          },
+          openai: {
+            providerName: "OpenAI",
+            baseUrl: "https://api.openai.com/v1",
+            models: ["gpt-4.1-mini", "gpt-4.1"]
+          },
+          openrouter: {
+            providerName: "OpenRouter",
+            baseUrl: "https://openrouter.ai/api/v1",
+            models: ["openai/gpt-4.1-mini", "google/gemini-2.5-flash"]
+          }
+        };
+
+        function renderModelSuggestions(models) {
+          modelSuggestions.innerHTML = "";
+          models.forEach((modelName) => {
+            const option = document.createElement("option");
+            option.value = modelName;
+            modelSuggestions.appendChild(option);
+          });
+        }
+
+        function applyPreset(presetKey, preserveModel = false) {
+          const preset = presets[presetKey] || presets.custom;
+          fields.providerPreset.value = presetKey;
+          if (presetKey === "custom") {
+            renderModelSuggestions([]);
+            return;
+          }
+
+          fields.providerName.value = preset.providerName;
+          fields.baseUrl.value = preset.baseUrl;
+          renderModelSuggestions(preset.models);
+          if (!preserveModel || !fields.model.value.trim()) {
+            fields.model.value = preset.models[0] || "";
+          }
+        }
+
+        document.getElementById("closeButton").addEventListener("click", async () => {
+          await window.screenAssist.toggleAssistant();
+        });
+
+        fields.providerPreset.addEventListener("change", () => {
+          applyPreset(fields.providerPreset.value);
+          output.textContent = "Preset applied. You can still edit any field before analyzing.";
+        });
+
+        document.querySelectorAll(".modeButton").forEach((button) => {
+          button.addEventListener("click", () => {
+            document.querySelectorAll(".modeButton").forEach((node) => node.classList.remove("active"));
+            button.classList.add("active");
+            currentMode = button.dataset.mode;
+          });
+        });
+
+        document.getElementById("saveSettings").addEventListener("click", async () => {
+          const settings = {
+            providerPreset: fields.providerPreset.value,
+            providerName: fields.providerName.value.trim(),
+            baseUrl: fields.baseUrl.value.trim(),
+            model: fields.model.value.trim(),
+            apiKey: fields.apiKey.value.trim()
+          };
+          await window.screenAssist.saveSettings(settings);
+          output.textContent = "Settings saved locally.";
+        });
+
+        document.getElementById("captureButton").addEventListener("click", async () => {
+          output.textContent = "Capturing screen...";
+          try {
+            capturedImage = await window.screenAssist.captureScreen();
+            preview.src = capturedImage;
+            output.textContent = "Screenshot captured. You can analyze it now.";
+          } catch (error) {
+            output.textContent = error.message;
+          }
+        });
+
+        document.getElementById("analyzeButton").addEventListener("click", async () => {
+          if (!capturedImage) {
+            output.textContent = "Capture a screenshot first.";
+            return;
+          }
+
+          output.textContent = "Analyzing screenshot...";
+          try {
+            const settings = {
+              providerPreset: fields.providerPreset.value,
+              providerName: fields.providerName.value.trim(),
+              baseUrl: fields.baseUrl.value.trim(),
+              model: fields.model.value.trim(),
+              apiKey: fields.apiKey.value.trim()
+            };
+
+            const result = await window.screenAssist.analyzeScreen({
+              ...settings,
+              mode: currentMode,
+              userNotes: userNotes.value.trim(),
+              imageDataUrl: capturedImage
+            });
+
+            output.textContent = typeof result === "string" ? result : JSON.stringify(result, null, 2);
+          } catch (error) {
+            output.textContent = error.message;
+          }
+        });
+
+        window.screenAssist.loadSettings().then((settings) => {
+          const presetKey = settings.providerPreset || "custom";
+          applyPreset(presetKey, true);
+          fields.providerPreset.value = presetKey;
+          fields.providerName.value = settings.providerName || "";
+          fields.baseUrl.value = settings.baseUrl || "";
+          fields.model.value = settings.model || "";
+          fields.apiKey.value = settings.apiKey || "";
+        });
+      }
+    </script>
+  </body>
+</html>
