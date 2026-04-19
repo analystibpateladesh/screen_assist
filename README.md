@@ -44,7 +44,7 @@ From `Downloads\screen_assist`:
 
 ```powershell
 cmd /c npm install
-cmd /c npm start/npm run dev
+cmd /c npm start
 ```
 The app keeps its runtime cache and local settings inside Downloads\screen_assist\.runtime so it avoids Windows permission issues with Electron cache folders.
 ## Build a Windows EXE
