@@ -14,12 +14,11 @@ So I built Screen Assist-an AI that can *see your screen and help you directly i
 - Debug errors directly from screenshots  
 - Understand UI, tools, and workflows across apps  
 It works across:
-- Coding environments (VS Code, etc.)
-- Data tools (R, Stata, Excel)
+- Coding, any app/software(basicaly a popup for your destop screen)
 - Browsers and general software
 
 ##  Example Use Cases
-- Fix a coding error by just screenshotting it  
+- Fix a error in any app.. get response..  
 - Ask “what should I do next?” in a workflow  
 - Understand a new software interface quickly  
 - Get step-by-step help in stats or data tools  
