@@ -38,51 +38,32 @@ Your data stays under your control.
 Screen Assist does **not use its own API keys**.  
 You plug in your own provider (Groq, Gemini, etc.), so all requests go directly through your account.
 
-##  Setup
-Download the project and run:
+## Setup Download this fiel as ZIP as extract it.. From Downloads\screen_assist:
 
-```bash
 npm install
-npm start/ npm run  dev
+npm start/npm run dev
 
-````
+The app keeps its runtime cache and local settings inside Downloads\screen_assist\.runtime so it avoids Windows permission issues with Electron cache folders.
+## Build A Windows EXE Install packaging dependencies:
 
-## 📦 Build Windows App
+powershell
+cmd /c npm install
 
-```bash
-npm run build
-```
+Create the Windows installer:
+powershell
+cmd /c npm run build
 
-The installer will be generated in:
+The generated installer will be created in: D:\screen_assist\dist Current product name: - Helpix@HCU - installer pattern: HelpixHCU-Setup-<version>.exe
 
-```
-dist/
-```
-
----
-
-## 🔌 Supported AI Providers
-
+##  Supported AI Providers
 You can connect any OpenAI-compatible API.
-
 ### Groq
-
 * Base URL: `https://api.groq.com/openai/v1`
-
-### OpenAI
-
-* Base URL: `https://api.openai.com/v1`
-
 ### Gemini
-
 * Base URL: `https://generativelanguage.googleapis.com/v1beta`
 * Model: `gemini-2.5-flash` (recommended)
-
 ### OpenRouter
-
 * Base URL: `https://openrouter.ai/api/v1`
-
----
 
 ##  Current Limitations (MVP)
 This is an early version, so a few things are still evolving:
