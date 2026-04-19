@@ -1,102 +1,104 @@
-# Screen Assist Win
+#  Screen Assist (Helpix)
 
-`Screen Assist (Helpix)` is a Windows desktop MVP for the workflow you described:
+**Screen Assist (Helpix)** is a desktop AI assistant that helps you understand and work faster across *any software on your screen*.  
+It sits on your desktop as a lightweight floating tool, lets you capture your screen instantly, and gives real-time AI guidance based on what you're looking at.
 
-- a small floating launcher that stays available
-- one-click screenshot capture
-- AI analysis of the current screen
-- coding-focused prompts like "what is wrong", "what next", and "write the next code step"
-- support for OpenAI-compatible APIs such as Groq, OpenAI, OpenRouter, and similar services
+##  Why I Built This
+While working across coding tools, stats software, and different apps, I often found myself switching tabs, searching errors, or figuring out “what to do next.”
+So I built Screen Assist — an AI that can *see your screen and help you directly in context*, without breaking your workflow.
 
-## What This MVP Does
+##  What It Does
+- Capture any part of your screen instantly  
+- Ask questions about what you're seeing  
+- Get explanations, suggestions, and next steps  
+- Debug errors directly from screenshots  
+- Understand UI, tools, and workflows across apps  
+It works across:
+- Coding environments (VS Code, etc.)
+- Data tools (R, Stata, Excel)
+- Browsers and general software
 
-This starter gives you:
+##  Example Use Cases
+- Fix a coding error by just screenshotting it  
+- Ask “what should I do next?” in a workflow  
+- Understand a new software interface quickly  
+- Get step-by-step help in stats or data tools  
+- Debug without copying and pasting errors  
 
-- a floating always-on-top launcher bubble
-- a larger assistant panel
-- screenshot capture of the main display
-- provider settings saved locally
-- preset dropdown for Groq, OpenAI, OpenRouter, or custom setup
-- AI analysis that sends both the screenshot and your note to a compatible chat-completions API
-- offline fallback guidance when no API is configured yet
+##  Key Features
+- Floating always-on-top assistant  
+- One-click screenshot capture  
+- AI-powered screen understanding  
+- Works with multiple AI providers  
+- Local configuration (your keys, your control)  
 
-## Current Limits
+##  Privacy First
+Your data stays under your control.
 
-This is an MVP, not the finished product yet.
+Screen Assist does **not use its own API keys**.  
+You plug in your own provider (Groq, Gemini, etc.), so all requests go directly through your account.
 
-- It analyzes screenshots, not the full live screen stream.
-- It does not yet detect the exact app automatically.
-- It does not yet read code files directly from VS Code/Stata/RStudio.
-- Full screenshot understanding still needs an API key for a provider you choose.
+##  Setup
+Download the project and run:
 
-## Setup
-Download this fiel as ZIP as extract it..
-From `Downloads\screen_assist`:
+```bash
+npm install
+npm start/ npm run  dev
 
-```powershell
-cmd /c npm install
-cmd /c npm start
+````
+
+## 📦 Build Windows App
+
+```bash
+npm run build
 ```
 
-The app keeps its runtime cache and local settings inside `Downloads\screen_assist\.runtime` so it avoids Windows permission issues with Electron cache folders.
+The installer will be generated in:
 
-## Build A Windows EXE
-
-Install packaging dependencies:
-
-```powershell
-cmd /c npm install
+```
+dist/
 ```
 
-Create the Windows installer:
+---
 
-```powershell
-cmd /c npm run build
-```
+## 🔌 Supported AI Providers
 
-The generated installer will be created in:
-
-`D:\screen_assist\dist`
-
-Current product name:
-
-- `Helpix@HCU`
-- installer pattern: `HelpixHCU-Setup-<version>.exe`
-
-## Suggested Provider Settings
+You can connect any OpenAI-compatible API.
 
 ### Groq
 
-- Base URL: `https://api.groq.com/openai/v1`
-- Model: use a current vision-capable model from Groq if available on your account
+* Base URL: `https://api.groq.com/openai/v1`
 
 ### OpenAI
 
-- Base URL: `https://api.openai.com/v1`
-- Model: use a current vision-capable chat model
+* Base URL: `https://api.openai.com/v1`
 
 ### Gemini
 
-- Base URL: `https://generativelanguage.googleapis.com/v1beta`
-- Model: `gemini-2.5-flash` or `gemini-2.5-flash-lite`
-- Uses the Gemini `generateContent` API with inline image data
+* Base URL: `https://generativelanguage.googleapis.com/v1beta`
+* Model: `gemini-2.5-flash` (recommended)
 
 ### OpenRouter
 
-- Base URL: `https://openrouter.ai/api/v1`
-- Model: choose a vision-capable model from your OpenRouter dashboard
+* Base URL: `https://openrouter.ai/api/v1`
 
-## Best Next Improvements
+---
 
-If you want, the next version should add:
+##  Current Limitations (MVP)
+This is an early version, so a few things are still evolving:
+* Works on screenshots (not live continuous screen yet)
+* No automatic app detection (manual context via screenshot)
+* Does not directly read files from IDEs yet
 
-1. Windows system tray icon with richer menu actions
-2. global hotkey for quick capture
-3. active-window detection
-4. OCR and code-block extraction
-5. direct helpers for Stata, R, Python, and SQL
-6. optional local context from your open project folder
+##  Vision
+The goal is to build a **true AI layer for your desktop** —
+an assistant that understands everything you're doing and helps you in real time, across any tool.
 
-## Notes On The Clickify Repo
+##  Feedback
 
-I could not reliably inspect that GitHub repo contents from this environment, so I did not pretend to verify it. This starter is built as a clean Windows-first Electron MVP for your use case rather than claiming compatibility with an unverified codebase.
+This is an early build and feedback is highly appreciated.
+If you try it, feel free to share ideas, issues, or improvements.
+
+**Happy building ⚡**
+
+
