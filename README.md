@@ -77,7 +77,6 @@ You can connect any OpenAI-compatible API.
 ##  Current Limitations (MVP)
 This is an early version, so a few things are still evolving:
 * Works on screenshots (not live continuous screen yet)
-* No automatic app detection (manual context via screenshot)
 * Does not directly read files from IDEs yet
 
 ##  Vision
@@ -87,7 +86,7 @@ an assistant that understands everything you're doing and helps you in real time
 ##  Feedback
 
 This is an early build and feedback is highly appreciated.
-If you try it, feel free to share ideas, issues, or improvements.
+If you try it, feel free to share ideas, issues, or improvements (Email: patelsvr123@gmail.com).
 
 **Happy building ⚡**
 
