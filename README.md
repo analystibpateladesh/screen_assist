@@ -5,7 +5,7 @@ It sits on your desktop as a lightweight floating tool, lets you capture your sc
 
 ##  Why I Built This
 While working across coding tools, stats software, and different apps, I often found myself switching tabs, searching errors, or figuring out “what to do next.”
-So I built Screen Assist — an AI that can *see your screen and help you directly in context*, without breaking your workflow.
+So I built Screen Assist-an AI that can *see your screen and help you directly in context*, without breaking your workflow.
 
 ##  What It Does
 - Capture any part of your screen instantly  
