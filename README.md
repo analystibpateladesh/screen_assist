@@ -1,6 +1,6 @@
 # Screen Assist Win
 
-`Screen Assist Win` is a Windows desktop MVP for the workflow you described:
+`Screen Assist (Helpix)` is a Windows desktop MVP for the workflow you described:
 
 - a small floating launcher that stays available
 - one-click screenshot capture
@@ -30,15 +30,15 @@ This is an MVP, not the finished product yet.
 - Full screenshot understanding still needs an API key for a provider you choose.
 
 ## Setup
-
-From `D:\screen-assist-win`:
+Download this fiel as ZIP as extract it..
+From `Downloads\screen_assist`:
 
 ```powershell
 cmd /c npm install
 cmd /c npm start
 ```
 
-The app keeps its runtime cache and local settings inside `D:\screen-assist-win\.runtime` so it avoids Windows permission issues with Electron cache folders.
+The app keeps its runtime cache and local settings inside `Downloads\screen_assist\.runtime` so it avoids Windows permission issues with Electron cache folders.
 
 ## Build A Windows EXE
 
@@ -56,7 +56,7 @@ cmd /c npm run build
 
 The generated installer will be created in:
 
-`D:\screen-assist-win\dist`
+`D:\screen_assist\dist`
 
 Current product name:
 
