@@ -38,22 +38,32 @@ Your data stays under your control.
 Screen Assist does **not use its own API keys**.  
 You plug in your own provider (Groq, Gemini, etc.), so all requests go directly through your account.
 
-## Setup Download this fiel as ZIP as extract it.. From Downloads\screen_assist:
+## Setup
 
-npm install
-npm start/npm run dev
+Download this file as a ZIP and extract it.  
+From `Downloads\screen_assist`:
 
-The app keeps its runtime cache and local settings inside Downloads\screen_assist\.runtime so it avoids Windows permission issues with Electron cache folders.
-## Build A Windows EXE Install packaging dependencies:
-
-powershell
+```powershell
 cmd /c npm install
+cmd /c npm start/npm run dev
+```
+The app keeps its runtime cache and local settings inside Downloads\screen_assist\.runtime so it avoids Windows permission issues with Electron cache folders.
+## Build a Windows EXE
 
-Create the Windows installer:
-powershell
+Install packaging dependencies:
+```
+cmd /c npm install
+```
+Create the Windows installer:|
+```
 cmd /c npm run build
+```
+The generated installer will be created in:
+D:\screen_assist\dist
 
-The generated installer will be created in: D:\screen_assist\dist Current product name: - Helpix@HCU - installer pattern: HelpixHCU-Setup-<version>.exe
+# Current product name:
+Helpix@HCU
+Installer pattern: HelpixHCU-Setup-<version>.exe
 
 ##  Supported AI Providers
 You can connect any OpenAI-compatible API.
