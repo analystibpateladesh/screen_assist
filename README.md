@@ -85,7 +85,7 @@ an assistant that understands everything you're doing and helps you in real time
 
 ##  Feedback
 
-This is an early build and feedback is highly appreciated.
+This is an early build and feedback is highly appreciated!
 If you try it, feel free to share ideas, issues, or improvements (Email: patelsvr123@gmail.com).
 
 **Happy building ⚡**
